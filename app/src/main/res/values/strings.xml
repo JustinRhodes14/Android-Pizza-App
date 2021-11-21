@@ -1,3 +1,20 @@
 <resources>
-    <string name="app_name">project5-akg106-jgr85</string>
+    <string name="app_name">Scarlet Pizza</string>
+    <string name="phone_number">Phone number</string>
+    <string name="app_name2">Order Deluxe</string>
+    <string-array name="size_array">
+        <item name="small_size">Small</item>
+        <item name="medium_size">Medium</item>
+        <item name="large_size">Large</item>
+    </string-array>
+    <string name="array_label">Pizza Size</string>
+    <string name="add_toppings">Additional Toppings</string>
+    <string name="sel_toppings">Selected Toppings</string>
+    <string name="add_button">Add Topping</string>
+    <string name="rem_button">Remove Topping</string>
+    <string name="price_label">Price: $</string>
+    <string name="base_value_label">0.00</string>
+    <string name="add_order">Add to Order</string>
+    <string name="deluxe_click">deluxeClick</string>
+    <string name="deluxe">Deluxe Pizza</string>
 </resources>
