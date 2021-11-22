@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton btn3;
     private EditText editTextPhoneNumber;
 
+    private long phoneNumber = -1;
     private Order o;
 
     /**
@@ -80,12 +81,7 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Pizza p = (Pizza)data.getSerializableExtra("pizza");
                 double price = Double.parseDouble(data.getStringExtra("price"));
-                if (o == null) {
-                    o = new Order(Long.parseLong(editTextPhoneNumber.getText().toString()));
-                    o.addPizza(p,price);
-                } else {
-                    o.addPizza(p,price);
-                }
+                o.addPizza(p,price);
                 CharSequence text = o.getPizzaList().toString();
                 Toast toast = Toast.makeText(getApplicationContext(),text,Toast.LENGTH_SHORT);
                 toast.show();
@@ -99,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
     protected void deluxeClick() {
         Intent intent = new Intent(this, PizzaActivity.class);
         intent.putExtra(PIZZA_TYPE,"Deluxe");
+        orderInit();
         startActivityForResult(intent,PIZZA_REQ);
     }
 
@@ -108,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
     protected void hawaiianClick() {
         Intent intent = new Intent(this, PizzaActivity.class);
         intent.putExtra(PIZZA_TYPE,"Hawaiian");
+        orderInit();
         startActivityForResult(intent,PIZZA_REQ);
     }
 
@@ -117,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
     protected void pepperoniClick() {
         Intent intent = new Intent(this, PizzaActivity.class);
         intent.putExtra(PIZZA_TYPE,"Pepperoni");
+        orderInit();
         startActivityForResult(intent,PIZZA_REQ);
     }
 
@@ -137,5 +136,13 @@ public class MainActivity extends AppCompatActivity {
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context,text,duration);
         toast.show();
+    }
+
+    protected void orderInit() {
+        long tempPhone = Long.parseLong(editTextPhoneNumber.getText().toString());
+        if (phoneNumber != tempPhone) {
+            phoneNumber = tempPhone;
+            o = new Order(phoneNumber);
+        }
     }
 }
