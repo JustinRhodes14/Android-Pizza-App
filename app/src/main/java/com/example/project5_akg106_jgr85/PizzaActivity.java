@@ -2,11 +2,14 @@ package com.example.project5_akg106_jgr85;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ActionMenuView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -20,6 +23,7 @@ import projectFiles.Hawaiian;
 import projectFiles.Order;
 import projectFiles.Pepperoni;
 import projectFiles.Pizza;
+import projectFiles.PizzaMaker;
 import projectFiles.Size;
 import projectFiles.Topping;
 
@@ -34,6 +38,7 @@ public class PizzaActivity extends AppCompatActivity {
     private ListView selectedToppings;
     private TextView priceText;
     private Spinner sizeSpinner;
+    private Button addButton;
 
     public static final int SMALL = 1;
     public static final int MAX_TOPPINGS = 7;
@@ -41,13 +46,14 @@ public class PizzaActivity extends AppCompatActivity {
     public static final int SETUP = 1;
     public static final int NOT_SETUP = 0;
 
-    private Order o;
     private ArrayList<Topping> selItems;
     private ArrayList<Topping> addItems;
     private ArrayAdapter adapter1;
     private ArrayAdapter adapter2;
     private int currSize = SMALL;
     private int initial = SETUP;
+    private String message;
+    private MainActivity mainActivity;
 
     /**
      * Creates new activity for ordering pizzas.
@@ -60,8 +66,10 @@ public class PizzaActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.PIZZA_TYPE);
+        this.message = message;
         initViews(message);
         priceText = (TextView)findViewById(R.id.textView7);
+        addButton = (Button)findViewById(R.id.button5);
         priceText.setText(setPrice(message));
         initListeners();
         initSpinListen();
@@ -75,8 +83,6 @@ public class PizzaActivity extends AppCompatActivity {
         sizeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println(currSize);
-                System.out.println(sizeSpinner.getSelectedItem());
                 incrementPrice(currSize,Size.toSize((String)(sizeSpinner.getSelectedItem())));
             }
 
@@ -226,5 +232,16 @@ public class PizzaActivity extends AppCompatActivity {
             currSize = Size.Small.getLabel();
         }
         priceText.setText(String.format("%,.2f", currPrice));
+    }
+
+    public void addOrder(View v) {
+        Pizza p = PizzaMaker.createPizza(message);
+        p.addToppings(selItems);
+        p.setSize(Size.toSize((String)(sizeSpinner.getSelectedItem())));
+        Intent intent = new Intent();
+        intent.putExtra("pizza",p);
+        intent.putExtra("price",priceText.getText());
+        setResult(RESULT_OK,intent);
+        finish();
     }
 }

@@ -1,5 +1,6 @@
 package projectFiles;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * Abstract class of a Pizza, used as a skeleton for subtypes of each pizza.
  * @author Andy Giang, Justin Rhodes
  */
-public abstract class Pizza {
+public abstract class Pizza implements Serializable {
     protected ArrayList<Topping> toppings = new ArrayList<Topping>();
     protected Size size;
     public abstract double price();
