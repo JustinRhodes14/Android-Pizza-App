@@ -17,4 +17,9 @@
     <string name="add_order">Add to Order</string>
     <string name="deluxe_click">deluxeClick</string>
     <string name="deluxe">Deluxe Pizza</string>
+    <string name="place_order">Place Order</string>
+    <string name="phone_text">Customer Phone Number</string>
+    <string name="sale_tax">Sales tax $</string>
+    <string name="subtotal">Subtotal $</string>
+    <string name="total_amount">Order Total $</string>
 </resources>

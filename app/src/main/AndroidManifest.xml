@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project5akg106jgr85">
         <activity
+            android:name=".OrderActivity"
+            android:exported="false" />
+        <activity
             android:name=".PizzaActivity"
             android:exported="false" />
         <activity
