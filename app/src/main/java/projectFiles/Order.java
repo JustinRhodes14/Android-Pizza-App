@@ -1,12 +1,13 @@
 package projectFiles;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Class to hold a list of pizzas and a users phone number, used to be added to the store order list.
  * @author Andy Giang, Justin Rhodes
  */
-public class Order {
+public class Order implements Serializable {
     private final long phoneNumber;
     private String stringNumber;
     private final ArrayList<Pizza> pizzaList;

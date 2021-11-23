@@ -53,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
                 Pizza p = (Pizza)data.getSerializableExtra("pizza");
                 double price = Double.parseDouble(data.getStringExtra("price"));
                 o.addPizza(p,price);
-                CharSequence text = o.getPizzaList().toString();
-                Toast toast = Toast.makeText(getApplicationContext(),text,Toast.LENGTH_SHORT);
-                toast.show(); // temporary for testing, remove this
+                successToast();
+            } else if (resultCode == RESULT_CANCELED) {
+                o = (Order)data.getSerializableExtra("order_object");
             }
         }
     }
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (phoneNumber == NOT_SET) {
+                if (phoneNumber == NOT_SET || o.getPizzaList().size() == 0) {
                     String s = "Please order something before checking the current order.";
                     Toast toast = Toast.makeText(getApplicationContext(),s,Toast.LENGTH_SHORT);
                     toast.show();
@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 String number = phoneNumber + "";
                 intent.putExtra("phone_number",number);
                 intent.putExtra("order_price",(o.getPrice()+""));
+                intent.putExtra("order_object",o);
                 startActivityForResult(intent,PIZZA_REQ);
             }
         });
@@ -168,11 +169,25 @@ public class MainActivity extends AppCompatActivity {
         toast.show();
     }
 
+    /**
+     * Initializes order for new phone numbers.
+     */
     protected void orderInit() {
         long tempPhone = Long.parseLong(editTextPhoneNumber.getText().toString());
         if (phoneNumber != tempPhone) {
             phoneNumber = tempPhone;
             o = new Order(phoneNumber);
         }
+    }
+
+    /**
+     * Toast for successful pizza addition.
+     */
+    protected void successToast() {
+        Context context = getApplicationContext();
+        CharSequence text = "Successfully added pizza.";
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context,text,duration);
+        toast.show();
     }
 }
