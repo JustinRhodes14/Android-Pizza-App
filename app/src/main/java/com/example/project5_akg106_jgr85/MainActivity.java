@@ -46,6 +46,12 @@ public class MainActivity extends AppCompatActivity {
         orderButtonInit();
     }
 
+    /**
+     * Handles completion of activities for transfer of data.
+     * @param requestCode Type of request from activity.
+     * @param resultCode Result from activity.
+     * @param data Data receieved from activity, containing various objects.
+     */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PIZZA_REQ) {
@@ -60,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Initializes OrderActivity view.
+     */
     public void orderButtonInit() {
         btn4 = (ImageButton)findViewById(R.id.imageButton5);
         btn4.setOnClickListener(new View.OnClickListener() {

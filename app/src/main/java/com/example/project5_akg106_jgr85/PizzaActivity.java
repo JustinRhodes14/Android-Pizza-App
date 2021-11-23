@@ -2,11 +2,9 @@ package com.example.project5_akg106_jgr85;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ActionMenuView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -20,7 +18,6 @@ import java.util.ArrayList;
 
 import projectFiles.Deluxe;
 import projectFiles.Hawaiian;
-import projectFiles.Order;
 import projectFiles.Pepperoni;
 import projectFiles.Pizza;
 import projectFiles.PizzaMaker;

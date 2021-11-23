@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 import projectFiles.Order;
 import projectFiles.Pizza;
-import projectFiles.Topping;
 
 public class OrderActivity extends AppCompatActivity {
 
@@ -92,6 +91,9 @@ public class OrderActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Alert for when user has empty order.
+     */
     public void emptyOrderToast() {
         new AlertDialog.Builder(this)
                 .setTitle("Empty Order")
