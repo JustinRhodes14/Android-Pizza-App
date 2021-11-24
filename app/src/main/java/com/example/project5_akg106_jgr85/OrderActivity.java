@@ -50,16 +50,16 @@ public class OrderActivity extends AppCompatActivity {
         pizzaList = (ListView)findViewById(R.id.listView3);
         Intent data = getIntent();
         double price = Double.parseDouble(data.getStringExtra("order_price"));
-        subtotal.setText(String.format("%,.2f",price));
-        double saleTax = (price*TAX_RATE);
-        double orderTotal = price + (price*TAX_RATE);
-        salesTax.setText(String.format("%,.2f",saleTax));
-        total.setText(String.format("%,.2f",orderTotal));
+        subtotal.setText(String.format("%,.2f", price));
+        double saleTax = (price * TAX_RATE);
+        double orderTotal = price + (price * TAX_RATE);
+        salesTax.setText(String.format("%,.2f", saleTax));
+        total.setText(String.format("%,.2f", orderTotal));
         phoneText.setText(data.getStringExtra("phone_number"));
         o = (Order)data.getSerializableExtra("order_object");
 
         pizzas = o.getPizzaList();
-        adapter1 = new ArrayAdapter<>(this,R.layout.activity_listview,pizzas);
+        adapter1 = new ArrayAdapter<>(this, R.layout.activity_listview, pizzas);
         pizzaList.setAdapter(adapter1);
         setListListener();
     }
@@ -102,9 +102,9 @@ public class OrderActivity extends AppCompatActivity {
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        Intent data = new Intent(OrderActivity.this,MainActivity.class);
-                        data.putExtra("order_object",o);
-                        setResult(RESULT_CANCELED,data);
+                        Intent data = new Intent(OrderActivity.this, MainActivity.class);
+                        data.putExtra("order_object", o);
+                        setResult(RESULT_CANCELED, data);
                         finish();
                     }}).show();
     }
@@ -115,9 +115,9 @@ public class OrderActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Log.d("CDA", "onBackPressed Called");
-        Intent data = new Intent(OrderActivity.this,MainActivity.class);
-        data.putExtra("order_object",o);
-        setResult(RESULT_CANCELED,data);
+        Intent data = new Intent(OrderActivity.this, MainActivity.class);
+        data.putExtra("order_object", o);
+        setResult(RESULT_CANCELED, data);
         finish();
     }
 

@@ -121,7 +121,7 @@ public class PizzaActivity extends AppCompatActivity {
                 selItems.remove(position);
                 adapter1.notifyDataSetChanged();
                 adapter2.notifyDataSetChanged();
-                priceText.setText(String.format("%,.2f",(Double.parseDouble(priceText.getText().toString()) - Pizza.ADDITIONAL_TOPPING_PRICE)));
+                priceText.setText(String.format("%,.2f", (Double.parseDouble(priceText.getText().toString()) - Pizza.ADDITIONAL_TOPPING_PRICE)));
             }
         });
     }
@@ -238,7 +238,7 @@ public class PizzaActivity extends AppCompatActivity {
 
     /**
      * Adds the pizza order.
-     * @param v
+     * @param v the current view.
      */
     public void addOrder(View v) {
         Pizza p = PizzaMaker.createPizza(message);
