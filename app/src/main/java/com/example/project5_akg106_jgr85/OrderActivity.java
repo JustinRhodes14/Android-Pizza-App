@@ -26,10 +26,10 @@ public class OrderActivity extends AppCompatActivity {
         Intent data = getIntent();
         double price = Double.parseDouble(data.getStringExtra("order_price"));
         subtotal.setText((price + ""));
-        double saleTax = (price*TAX_RATE);
-        double orderTotal = price + (price*TAX_RATE);
-        salesTax.setText(String.format("%,.2f",saleTax));
-        total.setText(String.format("%,.2f",orderTotal));
+        double saleTax = (price * TAX_RATE);
+        double orderTotal = price + (price * TAX_RATE);
+        salesTax.setText(String.format("%,.2f", saleTax));
+        total.setText(String.format("%,.2f", orderTotal));
         phoneText.setText(data.getStringExtra("phone_number"));
 
     }
