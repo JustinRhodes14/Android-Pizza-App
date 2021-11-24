@@ -47,10 +47,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * comment for onactivityresult
-     * @param requestCode
-     * @param resultCode
-     * @param data
+     * Handles completion of activities for transfer of data.
+     * @param requestCode Type of request from activity.
+     * @param resultCode Result from activity.
+     * @param data Data receieved from activity, containing various objects.
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -58,33 +58,34 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Pizza p = (Pizza)data.getSerializableExtra("pizza");
                 double price = Double.parseDouble(data.getStringExtra("price"));
-                o.addPizza(p, price);
-                CharSequence text = o.getPizzaList().toString();
-                Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
-                toast.show(); // temporary for testing, remove this
+                o.addPizza(p,price);
+                successToast();
+            } else if (resultCode == RESULT_CANCELED) {
+                o = (Order)data.getSerializableExtra("order_object");
             }
         }
     }
 
     /**
-     * comment for order button init
+     * Initializes OrderActivity view.
      */
     public void orderButtonInit() {
         btn4 = (ImageButton)findViewById(R.id.imageButton5);
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (phoneNumber == NOT_SET) {
+                if (phoneNumber == NOT_SET || o.getPizzaList().size() == 0) {
                     String s = "Please order something before checking the current order.";
-                    Toast toast = Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getApplicationContext(),s,Toast.LENGTH_SHORT);
                     toast.show();
                     return;
                 }
-                Intent intent = new Intent(MainActivity.this, OrderActivity.class);
+                Intent intent = new Intent(MainActivity.this,OrderActivity.class);
                 String number = phoneNumber + "";
-                intent.putExtra("phone_number", number);
-                intent.putExtra("order_price", (o.getPrice()+ ""));
-                startActivityForResult(intent, PIZZA_REQ);
+                intent.putExtra("phone_number",number);
+                intent.putExtra("order_price",(o.getPrice()+""));
+                intent.putExtra("order_object",o);
+                startActivityForResult(intent,PIZZA_REQ);
             }
         });
     }
@@ -99,8 +100,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (validPhoneNumber()) {
                     deluxeClick();
-                }
-                else {
+                } else {
                     phoneToast();
                 }
             }
@@ -111,8 +111,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (validPhoneNumber()) {
                     hawaiianClick();
-                }
-                else {
+                } else {
                     phoneToast();
                 }
             }
@@ -123,8 +122,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (validPhoneNumber()) {
                     pepperoniClick();
-                }
-                else {
+                } else {
                     phoneToast();
                 }
             }
@@ -138,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PizzaActivity.class);
         intent.putExtra(PIZZA_TYPE,"Deluxe");
         orderInit();
-        startActivityForResult(intent, PIZZA_REQ);
+        startActivityForResult(intent,PIZZA_REQ);
     }
 
     /**
@@ -148,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PizzaActivity.class);
         intent.putExtra(PIZZA_TYPE,"Hawaiian");
         orderInit();
-        startActivityForResult(intent, PIZZA_REQ);
+        startActivityForResult(intent,PIZZA_REQ);
     }
 
     /**
@@ -158,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PizzaActivity.class);
         intent.putExtra(PIZZA_TYPE,"Pepperoni");
         orderInit();
-        startActivityForResult(intent, PIZZA_REQ);
+        startActivityForResult(intent,PIZZA_REQ);
     }
 
     /**
@@ -176,12 +174,12 @@ public class MainActivity extends AppCompatActivity {
         Context context = getApplicationContext();
         CharSequence text = "Invalid phone number, must be 10 digits";
         int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(context, text, duration);
+        Toast toast = Toast.makeText(context,text,duration);
         toast.show();
     }
 
     /**
-     * Initializes an order.
+     * Initializes order for new phone numbers.
      */
     protected void orderInit() {
         long tempPhone = Long.parseLong(editTextPhoneNumber.getText().toString());
@@ -189,5 +187,16 @@ public class MainActivity extends AppCompatActivity {
             phoneNumber = tempPhone;
             o = new Order(phoneNumber);
         }
+    }
+
+    /**
+     * Toast for successful pizza addition.
+     */
+    protected void successToast() {
+        Context context = getApplicationContext();
+        CharSequence text = "Successfully added pizza.";
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context,text,duration);
+        toast.show();
     }
 }
