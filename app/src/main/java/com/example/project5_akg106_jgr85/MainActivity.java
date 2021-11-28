@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
      * Handles completion of activities for transfer of data.
      * @param requestCode Type of request from activity.
      * @param resultCode Result from activity.
-     * @param data Data receieved from activity, containing various objects.
+     * @param data Data received from activity, containing various objects.
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
