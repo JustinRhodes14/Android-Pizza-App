@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import projectFiles.Order;
 import projectFiles.Pizza;
+import projectFiles.StoreOrders;
 
 /**
  * Main activity class for ordering pizzas, looking at orders, and viewing store orders.
@@ -21,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String PIZZA_TYPE = "com.example.project5_akg106_jgr85.MESSAGE";
     public static final int PIZZA_REQ = 1;
+    public static final int ORDER_REQ = 2;
+    public static final int STORE_REQ = 3;
     public static final int PHONE_LENGTH = 10;
     public static final int NOT_SET = -1;
 
@@ -28,10 +32,12 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton btn2;
     private ImageButton btn3;
     private ImageButton btn4;
+    private ImageButton btn5;
     private EditText editTextPhoneNumber;
 
     private long phoneNumber = -1;
     private Order o;
+    private StoreOrders so;
 
     /**
      * Creates activity for main pizza view.
@@ -44,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
         editTextPhoneNumber = (EditText) findViewById(R.id.editTextPhoneNumber);
         buttonInit();
         orderButtonInit();
+        so = new StoreOrders();
+        storeButtonInit();
     }
 
     /**
@@ -60,10 +68,41 @@ public class MainActivity extends AppCompatActivity {
                 double price = Double.parseDouble(data.getStringExtra("price"));
                 o.addPizza(p,price);
                 successToast();
-            } else if (resultCode == RESULT_CANCELED) {
-                o = (Order)data.getSerializableExtra("order_object");
             }
         }
+        else if (requestCode == ORDER_REQ) {
+            if (resultCode == RESULT_CANCELED) {
+                o = (Order)data.getSerializableExtra("order_object");
+            }
+            else if (resultCode == RESULT_OK) {
+                Order tempO = (Order)data.getSerializableExtra("new_order");
+                so.add(tempO);
+                o = null;
+                editTextPhoneNumber.setText("");
+                orderSuccessToast();
+            }
+        } else if (requestCode == STORE_REQ) {
+            if (resultCode == RESULT_CANCELED) {
+                so = (StoreOrders)data.getSerializableExtra("store_order");
+            }
+        }
+    }
+
+    public void storeButtonInit() {
+        btn5 = (ImageButton)findViewById(R.id.imageButton6);
+        btn5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (so.getOrders().size() == 0) {
+                    emptyStoreToast();
+                }
+                else {
+                    Intent intent = new Intent(MainActivity.this,StoreOrderActivity.class);
+                    intent.putExtra("store_order",so);
+                    startActivityForResult(intent,STORE_REQ);
+                }
+            }
+        });
     }
 
     /**
@@ -74,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (phoneNumber == NOT_SET || o.getPizzaList().size() == 0) {
+                if (phoneNumber == NOT_SET || o == null || o.getPizzaList().size() == 0) {
                     String s = "Please order something before checking the current order.";
                     Toast toast = Toast.makeText(getApplicationContext(),s,Toast.LENGTH_SHORT);
                     toast.show();
@@ -85,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("phone_number",number);
                 intent.putExtra("order_price",(o.getPrice()+""));
                 intent.putExtra("order_object",o);
-                startActivityForResult(intent,PIZZA_REQ);
+                startActivityForResult(intent,ORDER_REQ);
             }
         });
     }
@@ -98,10 +137,8 @@ public class MainActivity extends AppCompatActivity {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validPhoneNumber()) {
+                if (validOrder()) {
                     deluxeClick();
-                } else {
-                    phoneToast();
                 }
             }
         });
@@ -109,10 +146,8 @@ public class MainActivity extends AppCompatActivity {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validPhoneNumber()) {
+                if (validOrder()) {
                     hawaiianClick();
-                } else {
-                    phoneToast();
                 }
             }
         });
@@ -120,10 +155,8 @@ public class MainActivity extends AppCompatActivity {
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validPhoneNumber()) {
+                if (validOrder()) {
                     pepperoniClick();
-                } else {
-                    phoneToast();
                 }
             }
         });
@@ -195,6 +228,54 @@ public class MainActivity extends AppCompatActivity {
     protected void successToast() {
         Context context = getApplicationContext();
         CharSequence text = "Successfully added pizza.";
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context,text,duration);
+        toast.show();
+    }
+
+    /**
+     * Toast for invalid order placement.
+     */
+    protected void existsToast() {
+        Context context = getApplicationContext();
+        CharSequence text = "Order has already been placed for given phone number.";
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context,text,duration);
+        toast.show();
+    }
+
+    /**
+     * Checks whether or not an order is able to be placed.
+     * @return
+     */
+    protected boolean validOrder() {
+        if (validPhoneNumber() == false) {
+            phoneToast();
+            return false;
+        }
+        long phoneNum = Long.parseLong(editTextPhoneNumber.getText().toString());
+        if (so.hasOrder(phoneNum)) {
+            existsToast();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Toast for a successful order placement.
+     * @return
+     */
+    protected void orderSuccessToast() {
+        Context context = getApplicationContext();
+        CharSequence text = "Successfully placed order.";
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context,text,duration);
+        toast.show();
+    }
+
+    protected void emptyStoreToast() {
+        Context context = getApplicationContext();
+        CharSequence text = "Store order list is empty.";
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context,text,duration);
         toast.show();

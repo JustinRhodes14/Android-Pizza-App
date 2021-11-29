@@ -18,6 +18,8 @@ import java.util.ArrayList;
 
 import projectFiles.Order;
 import projectFiles.Pizza;
+import projectFiles.PizzaMaker;
+import projectFiles.Size;
 
 public class OrderActivity extends AppCompatActivity {
 
@@ -134,5 +136,17 @@ public class OrderActivity extends AppCompatActivity {
         subtotal.setText(String.format("%,.2f", sub));
         salesTax.setText(String.format("%,.2f", tax));
         total.setText(String.format("%,.2f", orderTotal));
+    }
+
+    /**
+     * Event handler for place order button.
+     */
+    public void placeOrder(View v) {
+        long phoneNum = Long.parseLong(phoneText.getText().toString());
+        Order tempO = new Order(phoneNum, this.pizzas, total.getText().toString());
+        Intent intent = new Intent();
+        intent.putExtra("new_order",tempO);
+        setResult(RESULT_OK,intent);
+        finish();
     }
 }

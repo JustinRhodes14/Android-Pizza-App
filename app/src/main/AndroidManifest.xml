@@ -10,11 +10,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project5akg106jgr85">
         <activity
+            android:name=".StoreOrderActivity"
+            android:exported="false"
+            android:label="@string/store_label"
+            android:parentActivityName="com.example.project5_akg106_jgr85.MainActivity"/>
+        <activity
             android:name=".OrderActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/curr_label"
+            android:parentActivityName="com.example.project5_akg106_jgr85.MainActivity"/>
         <activity
             android:name=".PizzaActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="@string/pizza_label"
+            android:parentActivityName="com.example.project5_akg106_jgr85.MainActivity"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
