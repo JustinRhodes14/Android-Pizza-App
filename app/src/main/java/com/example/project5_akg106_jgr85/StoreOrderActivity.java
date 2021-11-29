@@ -46,11 +46,11 @@ public class StoreOrderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_order);
-        orderList = (ListView)findViewById(R.id.listView3);
-        numSpinner = (Spinner)findViewById(R.id.spinner3);
-        totalText = (TextView)findViewById(R.id.textView18);
+        orderList = (ListView) findViewById(R.id.listView3);
+        numSpinner = (Spinner) findViewById(R.id.spinner3);
+        totalText = (TextView) findViewById(R.id.textView18);
         Intent data = getIntent();
-        so = (StoreOrders)data.getSerializableExtra("store_order");
+        so = (StoreOrders) data.getSerializableExtra("store_order");
         spinnerInit();
     }
 
@@ -59,7 +59,7 @@ public class StoreOrderActivity extends AppCompatActivity {
      */
     protected void spinnerInit() {
         phones = so.getNumbers();
-        adapter2 = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item,phones);
+        adapter2 = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, phones);
         numSpinner.setAdapter(adapter2);
         numSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -99,7 +99,8 @@ public class StoreOrderActivity extends AppCompatActivity {
                             data.putExtra("store_order", so);
                             setResult(RESULT_CANCELED, data);
                             finish();
-                        }}).show();
+                        }
+                    }).show();
         }
     }
 
@@ -117,8 +118,8 @@ public class StoreOrderActivity extends AppCompatActivity {
 
     /**
      * Method override to prevent parent activity from resetting.
-     * @param item
-     * @return
+     * @param item the menu item selected.
+     * @return true if back button is pressed, false if otherwise.
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -66,8 +66,8 @@ public class PizzaActivity extends AppCompatActivity {
         String message = intent.getStringExtra(MainActivity.PIZZA_TYPE);
         this.message = message;
         initViews(message);
-        priceText = (TextView)findViewById(R.id.textView7);
-        addButton = (Button)findViewById(R.id.button5);
+        priceText = (TextView) findViewById(R.id.textView7);
+        addButton = (Button) findViewById(R.id.button5);
         priceText.setText(setPrice(message));
         initListeners();
         initSpinListen();
@@ -77,11 +77,11 @@ public class PizzaActivity extends AppCompatActivity {
      * Initializes the spinner functionality for changing the price.
      */
     protected void initSpinListen() {
-        sizeSpinner = (Spinner)findViewById(R.id.spinner);
+        sizeSpinner = (Spinner) findViewById(R.id.spinner);
         sizeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                incrementPrice(currSize,Size.toSize((String)(sizeSpinner.getSelectedItem())));
+                incrementPrice(currSize, Size.toSize((String)(sizeSpinner.getSelectedItem())));
             }
 
             @Override
@@ -107,7 +107,7 @@ public class PizzaActivity extends AppCompatActivity {
                 addItems.remove(position);
                 adapter1.notifyDataSetChanged();
                 adapter2.notifyDataSetChanged();
-                priceText.setText(String.format("%,.2f",(Double.parseDouble(priceText.getText().toString()) + Pizza.ADDITIONAL_TOPPING_PRICE)));
+                priceText.setText(String.format("%,.2f", (Double.parseDouble(priceText.getText().toString()) + Pizza.ADDITIONAL_TOPPING_PRICE)));
             }
         });
         selectedToppings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -121,7 +121,7 @@ public class PizzaActivity extends AppCompatActivity {
                 selItems.remove(position);
                 adapter1.notifyDataSetChanged();
                 adapter2.notifyDataSetChanged();
-                priceText.setText(String.format("%,.2f",(Double.parseDouble(priceText.getText().toString()) - Pizza.ADDITIONAL_TOPPING_PRICE)));
+                priceText.setText(String.format("%,.2f", (Double.parseDouble(priceText.getText().toString()) - Pizza.ADDITIONAL_TOPPING_PRICE)));
             }
         });
     }
@@ -131,27 +131,29 @@ public class PizzaActivity extends AppCompatActivity {
      * @param message Message from the intent.
      */
     protected void initViews(String message) {
-        imageView = (ImageView)findViewById(R.id.imageView);
-        additionalToppings = (ListView)findViewById(R.id.listView2);
-        selectedToppings = (ListView)findViewById(R.id.listView1);
+        imageView = (ImageView) findViewById(R.id.imageView);
+        additionalToppings = (ListView) findViewById(R.id.listView2);
+        selectedToppings = (ListView) findViewById(R.id.listView1);
         if (message.equals("Deluxe")) {
             imageView.setImageResource(R.drawable.deluxepizza);
             selItems = Deluxe.selectedComboBox();
             addItems = Deluxe.additionalComboBox();
             DEFAULT_TOPPINGS = Deluxe.selectedComboBox();
-        } else if (message.equals("Hawaiian")) {
+        }
+        else if (message.equals("Hawaiian")) {
             imageView.setImageResource(R.drawable.hawaiianpizza);
             selItems = Hawaiian.selectedComboBox();
             addItems = Hawaiian.additionalComboBox();
             DEFAULT_TOPPINGS = Hawaiian.selectedComboBox();
-        } else {
+        }
+        else {
             imageView.setImageResource(R.drawable.pepperonipizza);
             selItems = Pepperoni.selectedComboBox();
             addItems = Pepperoni.additionalComboBox();
             DEFAULT_TOPPINGS = Pepperoni.selectedComboBox();
         }
-        adapter1 = new ArrayAdapter<>(this,R.layout.activity_listview,addItems);
-        adapter2 = new ArrayAdapter<>(this,R.layout.activity_listview,selItems);
+        adapter1 = new ArrayAdapter<>(this, R.layout.activity_listview, addItems);
+        adapter2 = new ArrayAdapter<>(this, R.layout.activity_listview, selItems);
         selectedToppings.setAdapter(adapter2);
         additionalToppings.setAdapter(adapter1);
     }
@@ -164,9 +166,11 @@ public class PizzaActivity extends AppCompatActivity {
     protected CharSequence setPrice(String message) {
         if (message.equals("Deluxe")) {
             return "" + Pizza.DELUXE_PRICE;
-        } else if (message.equals("Hawaiian")) {
+        }
+        else if (message.equals("Hawaiian")) {
             return "" + Pizza.HAWAIIAN_PRICE;
-        } else {
+        }
+        else {
             return "" + Pizza.PEPPERONI_PRICE;
         }
     }
@@ -177,7 +181,7 @@ public class PizzaActivity extends AppCompatActivity {
     protected void addToast() {
         CharSequence text = "You may only have 7 toppings.";
         int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(getBaseContext(),text,duration);
+        Toast toast = Toast.makeText(getBaseContext(), text, duration);
         toast.show();
     }
 
@@ -187,7 +191,7 @@ public class PizzaActivity extends AppCompatActivity {
     protected void defaultToast() {
         CharSequence text = "You cannot remove default toppings.";
         int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(getBaseContext(),text,duration);
+        Toast toast = Toast.makeText(getBaseContext(), text, duration);
         toast.show();
     }
 
@@ -241,16 +245,16 @@ public class PizzaActivity extends AppCompatActivity {
         p.addToppings(selItems);
         p.setSize(Size.toSize((String)(sizeSpinner.getSelectedItem())));
         Intent intent = new Intent();
-        intent.putExtra("pizza",p);
-        intent.putExtra("price",priceText.getText());
-        setResult(RESULT_OK,intent);
+        intent.putExtra("pizza", p);
+        intent.putExtra("price", priceText.getText());
+        setResult(RESULT_OK, intent);
         finish();
     }
 
     /**
      * Method override to prevent parent activity from resetting.
-     * @param item
-     * @return
+     * @param item the menu item selected.
+     * @return true if back button is pressed, false if otherwise.
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
