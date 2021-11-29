@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -231,6 +232,10 @@ public class PizzaActivity extends AppCompatActivity {
         priceText.setText(String.format("%,.2f", currPrice));
     }
 
+    /**
+     * Adds order to store orders in main activity.
+     * @param v View.
+     */
     public void addOrder(View v) {
         Pizza p = PizzaMaker.createPizza(message);
         p.addToppings(selItems);
@@ -240,5 +245,21 @@ public class PizzaActivity extends AppCompatActivity {
         intent.putExtra("price",priceText.getText());
         setResult(RESULT_OK,intent);
         finish();
+    }
+
+    /**
+     * Method override to prevent parent activity from resetting.
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
