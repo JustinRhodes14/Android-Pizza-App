@@ -22,4 +22,10 @@
     <string name="sale_tax">Sales tax $</string>
     <string name="subtotal">Subtotal $</string>
     <string name="total_amount">Order Total $</string>
+    <string name="remove_order">Remove Order</string>
+    <string name="add_hint">Click a topping to add it</string>
+    <string name="remove_hint">Click a topping to remove it</string>
+    <string name="pizza_label">Order Pizza</string>
+    <string name="curr_label">Current Order</string>
+    <string name="store_label">Store Orders</string>
 </resources>

@@ -1,5 +1,6 @@
 package projectFiles;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -7,7 +8,7 @@ import java.util.ArrayList;
  * Class that keeps the list of orders placed by the user.
  * Includes an export() method that saves the store order to an external text file.
  */
-public class StoreOrders {
+public class StoreOrders implements Serializable {
 
     private static final ArrayList<Order> ORDERS = new ArrayList<Order>();
     private static final DecimalFormat DF = new DecimalFormat("0.00");
@@ -28,7 +29,14 @@ public class StoreOrders {
         if (phoneNumber == null) {
             return;
         }
-        ORDERS.removeIf(order -> order.getPhoneNumber() == (Long.parseLong(phoneNumber)));
+        //ORDERS.removeIf(order -> order.getPhoneNumber() == (Long.parseLong(phoneNumber)));
+
+        for (int i = 0; i < ORDERS.size(); i++) {
+            if (ORDERS.get(i).getPhoneNumber() == Long.parseLong(phoneNumber)) {
+                ORDERS.remove(i);
+                return;
+            }
+        }
     }
 
     /**
@@ -52,5 +60,28 @@ public class StoreOrders {
      */
     public static ArrayList<Order> getOrders() {
         return ORDERS;
+    }
+
+    /**
+     * Getter method for all order phone numbers for the store order.
+     * @return a list of phone numbers in the store order list.
+     */
+    public static ArrayList<Long> getNumbers() {
+        ArrayList<Long> phoneNumbers = new ArrayList<Long>();
+
+        for (Order o : ORDERS) {
+            phoneNumbers.add(o.getPhoneNumber());
+        }
+
+        return phoneNumbers;
+    }
+
+    /**
+     * Returns order at specified index.
+     * @param index Index in arraylist of desired order.
+     * @return Specified order.
+     */
+    public Order getOrder(int index) {
+        return ORDERS.get(index);
     }
 }
