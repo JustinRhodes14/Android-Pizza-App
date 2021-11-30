@@ -11,6 +11,11 @@ import java.util.List;
 public abstract class Pizza implements Serializable {
     protected ArrayList<Topping> toppings = new ArrayList<Topping>();
     protected Size size;
+
+    /**
+     * Abstract price method for all instances of pizza.
+     * @return Price as a double.
+     */
     public abstract double price();
 
     public static final double DELUXE_PRICE = 12.99;

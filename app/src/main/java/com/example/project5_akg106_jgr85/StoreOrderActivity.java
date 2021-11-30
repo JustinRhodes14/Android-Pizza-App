@@ -31,10 +31,12 @@ public class StoreOrderActivity extends AppCompatActivity {
     private TextView totalText;
     private ListView orderList;
 
+    public static final boolean NOT_CANCELABLE = false;
+
     private StoreOrders so;
     private ArrayList<Pizza> pizzas;
     private ArrayAdapter adapter1;
-    private ArrayList<Long> phones;
+    private ArrayList<String> phones;
     private ArrayAdapter adapter2;
     private int currentSpin = -1; //no item selected
 
@@ -62,6 +64,13 @@ public class StoreOrderActivity extends AppCompatActivity {
         adapter2 = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, phones);
         numSpinner.setAdapter(adapter2);
         numSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            /**
+             * Event handler for spinner items being selected.
+             * @param parent Parent of spinner object.
+             * @param view Activity view.
+             * @param position Position of item.
+             * @param id Item id.
+             */
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 currentSpin = position;
@@ -71,6 +80,11 @@ public class StoreOrderActivity extends AppCompatActivity {
                 orderList.setAdapter(adapter1);
                 totalText.setText((String.format("%,.2f", o.getPrice())));
             }
+
+            /**
+             * Do nothing method for spinner object.
+             * @param parent Parent of object.
+             */
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -82,7 +96,7 @@ public class StoreOrderActivity extends AppCompatActivity {
      * @param v Object view for button.
      */
     public void removeOrder(View v) {
-        so.remove(phones.get(currentSpin).toString());
+        so.remove(phones.get(currentSpin));
         phones.remove(currentSpin);
         adapter2.notifyDataSetChanged();
         if (phones.size() == 0) {
@@ -92,11 +106,17 @@ public class StoreOrderActivity extends AppCompatActivity {
                     .setTitle("Empty Store Order")
                     .setMessage("Store orders empty, returning to main screen.")
                     .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setCancelable(NOT_CANCELABLE)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 
+                        /**
+                         * Event handler for spinner list when said list is empty.
+                         * @param dialog Dialog to show.
+                         * @param whichButton Buttons to show.
+                         */
                         public void onClick(DialogInterface dialog, int whichButton) {
                             Intent data = new Intent(StoreOrderActivity.this, MainActivity.class);
-                            data.putExtra("store_order", so);
+                            data.putExtra("store_order",so);
                             setResult(RESULT_CANCELED, data);
                             finish();
                         }

@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
 import projectFiles.Order;
 import projectFiles.Pizza;
 import projectFiles.StoreOrders;
@@ -75,8 +74,10 @@ public class MainActivity extends AppCompatActivity {
             }
             else if (resultCode == RESULT_OK) {
                 Order tempO = (Order) data.getSerializableExtra("new_order");
+                tempO.setStringNumber(editTextPhoneNumber.getText().toString());
                 so.add(tempO);
                 o = null;
+                phoneNumber = NOT_SET;
                 editTextPhoneNumber.setText("");
                 orderSuccessToast();
             }
@@ -84,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
         else if (requestCode == STORE_REQ) {
             if (resultCode == RESULT_CANCELED) {
                 so = (StoreOrders) data.getSerializableExtra("store_order");
+                o = null;
+                phoneNumber = NOT_SET;
+                editTextPhoneNumber.setText("");
             }
         }
     }
@@ -94,6 +98,10 @@ public class MainActivity extends AppCompatActivity {
     public void storeButtonInit() {
         btn5 = (ImageButton) findViewById(R.id.imageButton6);
         btn5.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Event handler for store order button to launch store order activity.
+             * @param v Activity view.
+             */
             @Override
             public void onClick(View v) {
                 if (so.getOrders().size() == 0) {
@@ -114,6 +122,10 @@ public class MainActivity extends AppCompatActivity {
     public void orderButtonInit() {
         btn4 = (ImageButton) findViewById(R.id.imageButton5);
         btn4.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Event handler for order button to launch order activity.
+             * @param v Activity view.
+             */
             @Override
             public void onClick(View v) {
                 if (phoneNumber == NOT_SET || o == null || o.getPizzaList().size() == 0) {
@@ -123,8 +135,6 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 Intent intent = new Intent(MainActivity.this, OrderActivity.class);
-                String number = phoneNumber + "";
-                intent.putExtra("phone_number", number);
                 intent.putExtra("order_price", (o.getPrice() + ""));
                 intent.putExtra("order_object", o);
                 startActivityForResult(intent, ORDER_REQ);
@@ -138,6 +148,10 @@ public class MainActivity extends AppCompatActivity {
     public void buttonInit() {
         btn1 = (ImageButton) findViewById(R.id.imageButton);
         btn1.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Event handler for pizza button to launch deluxe pizza activity.
+             * @param v Activity view.
+             */
             @Override
             public void onClick(View v) {
                 if (validOrder()) {
@@ -147,6 +161,10 @@ public class MainActivity extends AppCompatActivity {
         });
         btn2 = (ImageButton) findViewById(R.id.imageButton3);
         btn2.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Event handler for pizza button to launch hawaiian pizza activity.
+             * @param v Activity view.
+             */
             @Override
             public void onClick(View v) {
                 if (validOrder()) {
@@ -156,6 +174,10 @@ public class MainActivity extends AppCompatActivity {
         });
         btn3 = (ImageButton) findViewById(R.id.imageButton4);
         btn3.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Event handler for pizza button to launch pepperoni pizza activity.
+             * @param v Activity view.
+             */
             @Override
             public void onClick(View v) {
                 if (validOrder()) {
@@ -222,6 +244,7 @@ public class MainActivity extends AppCompatActivity {
         if (phoneNumber != tempPhone) {
             phoneNumber = tempPhone;
             o = new Order(phoneNumber);
+            o.setStringNumber(editTextPhoneNumber.getText().toString());
         }
     }
 

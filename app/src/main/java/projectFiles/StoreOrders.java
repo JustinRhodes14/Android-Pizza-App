@@ -66,11 +66,11 @@ public class StoreOrders implements Serializable {
      * Getter method for all order phone numbers for the store order.
      * @return a list of phone numbers in the store order list.
      */
-    public static ArrayList<Long> getNumbers() {
-        ArrayList<Long> phoneNumbers = new ArrayList<Long>();
+    public static ArrayList<String> getNumbers() {
+        ArrayList<String> phoneNumbers = new ArrayList<>();
 
         for (Order o : ORDERS) {
-            phoneNumbers.add(o.getPhoneNumber());
+            phoneNumbers.add(o.getStringNumber());
         }
 
         return phoneNumbers;

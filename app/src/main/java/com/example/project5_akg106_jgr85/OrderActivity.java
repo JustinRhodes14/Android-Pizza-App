@@ -2,7 +2,6 @@ package com.example.project5_akg106_jgr85;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,6 +30,7 @@ public class OrderActivity extends AppCompatActivity {
     public static final double TAX_RATE = .06625;
     public static final double MIN_SUB_TOTAL = 0;
     public static final double FIX_SUB_TOTAL = -1;
+    public static final boolean NOT_CANCELABLE = false;
 
     private ArrayList<Pizza> pizzas;
     private ArrayAdapter adapter1;
@@ -56,8 +56,8 @@ public class OrderActivity extends AppCompatActivity {
         double orderTotal = price + (price * TAX_RATE);
         salesTax.setText(String.format("%,.2f", saleTax));
         total.setText(String.format("%,.2f", orderTotal));
-        phoneText.setText(data.getStringExtra("phone_number"));
         o = (Order) data.getSerializableExtra("order_object");
+        phoneText.setText(o.getStringNumber());
 
         pizzas = o.getPizzaList();
         adapter1 = new ArrayAdapter<>(this, R.layout.activity_listview, pizzas);
@@ -70,6 +70,13 @@ public class OrderActivity extends AppCompatActivity {
      */
     protected void setListListener() {
         pizzaList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            /**
+             * Event handler for item selection in listview.
+             * @param parent Parent of object.
+             * @param view Activity view.
+             * @param position Position of item.
+             * @param id ID of item.
+             */
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 new AlertDialog.Builder(OrderActivity.this)
@@ -100,9 +107,14 @@ public class OrderActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle("Empty Order")
                 .setMessage("Order list empty, returning to main activity.")
+                .setCancelable(NOT_CANCELABLE)
                 .setIcon(R.drawable.ic_launcher_foreground)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-
+                    /**
+                     * Event handler for listview when order is empty.
+                     * @param dialog Type of dialog.
+                     * @param whichButton Buttons to show.
+                     */
                     public void onClick(DialogInterface dialog, int whichButton) {
                         Intent data = new Intent(OrderActivity.this, MainActivity.class);
                         data.putExtra("order_object", o);

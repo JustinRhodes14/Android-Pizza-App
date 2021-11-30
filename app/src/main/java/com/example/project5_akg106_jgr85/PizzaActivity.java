@@ -14,9 +14,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
-
 import projectFiles.Deluxe;
 import projectFiles.Hawaiian;
 import projectFiles.Pepperoni;
@@ -51,7 +49,6 @@ public class PizzaActivity extends AppCompatActivity {
     private int currSize = SMALL;
     private int initial = SETUP;
     private String message;
-    private MainActivity mainActivity;
 
     /**
      * Creates new activity for ordering pizzas.
@@ -61,7 +58,6 @@ public class PizzaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pizza);
-
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.PIZZA_TYPE);
         this.message = message;
@@ -79,14 +75,24 @@ public class PizzaActivity extends AppCompatActivity {
     protected void initSpinListen() {
         sizeSpinner = (Spinner) findViewById(R.id.spinner);
         sizeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            /**
+             * Event handler for item selection in spinner.
+             * @param parent Parent of object.
+             * @param view Activity view.
+             * @param position Position of item.
+             * @param id ID of item.
+             */
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 incrementPrice(currSize, Size.toSize((String)(sizeSpinner.getSelectedItem())));
             }
 
+            /**
+             * Do nothing method for when no item is selected in spinner.
+             * @param parent Parent of object.
+             */
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
     }
@@ -96,6 +102,13 @@ public class PizzaActivity extends AppCompatActivity {
      */
     protected void initListeners() {
         additionalToppings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            /**
+             * Event handler for item selection in listview.
+             * @param parent Parent of object.
+             * @param view Activity view.
+             * @param position Position of item.
+             * @param id ID of item.
+             */
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (selItems.size() == MAX_TOPPINGS) {
@@ -111,6 +124,13 @@ public class PizzaActivity extends AppCompatActivity {
             }
         });
         selectedToppings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            /**
+             * Event handler for item selection in listview.
+             * @param parent Parent of object.
+             * @param view Activity view.
+             * @param position Position of item.
+             * @param id ID of item.
+             */
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (DEFAULT_TOPPINGS.contains(selItems.get(position))) {
@@ -121,7 +141,8 @@ public class PizzaActivity extends AppCompatActivity {
                 selItems.remove(position);
                 adapter1.notifyDataSetChanged();
                 adapter2.notifyDataSetChanged();
-                priceText.setText(String.format("%,.2f", (Double.parseDouble(priceText.getText().toString()) - Pizza.ADDITIONAL_TOPPING_PRICE)));
+                priceText.setText(String.format("%,.2f",
+                        (Double.parseDouble(priceText.getText().toString()) - Pizza.ADDITIONAL_TOPPING_PRICE)));
             }
         });
     }
